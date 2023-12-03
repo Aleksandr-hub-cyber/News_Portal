@@ -3,18 +3,31 @@
 {% load custom_filters %}
 
 {% block title %}
-Новость
+Posts
 {% endblock title %}
 
-
-{% block body %}
-<center><h1>{{ post.post_title|censor }}</h1></center>
-
-<hr>
-
-<center>{{ post.post_text|censor }}</center>
-
-<hr>
-Дата публикации: {{ post.created_at|date:'d M Y' }}
-
-{% endblock body %}
+{% block content %}
+   <h1>Все новости</h1>
+   <h3>{{ time_now|date:'M d Y' }}</h3>
+   <h3> Количество новостей : {{ post | length }} </h3>
+   <h3> {{ next_sale|default_if_none:"Следите за новостями!" }} </h3>
+   <hr>
+   {% if posts %}
+       <table>
+           <tr>
+               <td>Заголовок</td>
+               <td>Опубликовано</td>
+               <td>Содержание</td>
+           </tr>
+           {% for Post in post %}
+           <tr>
+               <td>{{ Post.title | censor }}</td>
+               <td>{{ Post.create_time }}</td>
+               <td>{{ Post.text | truncatewords:20 | censor }}</td>
+           </tr>
+           {% endfor %}
+       </table>
+   {% else %}
+       <h2>Новостей нуль. Ниче не происходит.</h2>
+   {% endif %}
+{% endblock content %}
